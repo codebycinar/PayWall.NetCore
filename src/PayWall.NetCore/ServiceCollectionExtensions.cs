@@ -54,6 +54,20 @@ namespace PayWall.NetCore
                 .AddMemberApiClient(payWallOptions, handlerFactories)
                 .AddTransient<PayWallService>();
         }
+
+        // PayWallOptions'ı manuel olarak enjekte edebilmek için yeni extension metod
+        public static void AddPaywallService(
+            this IServiceCollection services,
+            PayWallOptions payWallOptions, // Config dışında ayarları alabilmek için
+            params Func<IServiceProvider, DelegatingHandler>[] handlerFactories)
+        {
+            services
+                .AddPaymentApiClient(payWallOptions, handlerFactories)
+                .AddPaymentPrivateApiClient(payWallOptions, handlerFactories)
+                .AddCardWallApiClient(payWallOptions, handlerFactories)
+                .AddMemberApiClient(payWallOptions, handlerFactories)
+                .AddTransient<PayWallService>();
+        }
         #endregion
 
         #region Private Methods
